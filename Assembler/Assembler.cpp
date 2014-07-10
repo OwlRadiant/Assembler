@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include "parse.h"
 #include "extension.h"
+#include "codeMap.h"
 #include <string>
 #include <sstream>
 #include <fstream>
@@ -20,6 +21,11 @@ int main(int argc, char** argv){
 		cout << "Input an .asm file to convert to a .hack file." << endl;
 		return -1;
 	}
+
+	//after succesful opening of file initializes codemap that will translate assembly to machine code
+	init_codemap();
+
+	//opens output file and names it accordingly
 	ofstream outputfile(getFileName(argv[1]) + ".hack");
 
 	//get line from inputfile
