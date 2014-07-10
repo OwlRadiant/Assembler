@@ -60,14 +60,12 @@ std::string parse(std::string line){
 		
 	}
 
-	//removes all whitespaces
-	dest.erase(std::remove_if(dest.begin(), dest.end(), ::isspace), dest.end());
-	comp.erase(std::remove_if(comp.begin(), comp.end(), ::isspace), comp.end());
-	jump.erase(std::remove_if(jump.begin(), jump.end(), ::isspace), jump.end());
+	
 
 	std::string test1 = code_dest(dest);
 	std::string test2 = code_comp(comp);
 	std::string test3 = code_jump(jump);
-	parsed_line = "111" + code_dest(dest) + code_comp(comp) + code_jump(jump);
+
+	parsed_line = "111" +code_comp(comp) + code_dest(dest) + code_jump(jump);
 	return parsed_line;
 }

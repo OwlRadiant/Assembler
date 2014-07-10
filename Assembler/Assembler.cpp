@@ -7,6 +7,7 @@
 #include <string>
 #include <sstream>
 #include <fstream>
+#include <algorithm>
 using namespace std;
 
 int main(int argc, char** argv){
@@ -35,6 +36,13 @@ int main(int argc, char** argv){
 	int line_count = 0;
 	while (getline(inputfile, line)){
 		line_count++;
+
+		//remove all whitespaces from the instruction
+		line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+
+		if (line.find_first_of("//") == 0) continue;
+		
+
 		string parsed_line = parse(line);
 		outputfile << parsed_line << endl;
 
