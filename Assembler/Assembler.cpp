@@ -8,6 +8,7 @@
 #include <sstream>
 #include <fstream>
 #include <algorithm>
+#include "symboltable.h"
 using namespace std;
 
 int main(int argc, char** argv){
@@ -23,8 +24,9 @@ int main(int argc, char** argv){
 		return -1;
 	}
 
-	//after succesful opening of file initializes codemap that will translate assembly to machine code
+	//after succesful opening of file initializes codemap that will translate assembly to machine code; also initialize symbol table to store labels/symbols
 	init_codemap();
+	init_symbol_table();
 
 	//opens output file and names it accordingly
 	ofstream outputfile(getFileName(argv[1]) + ".hack");
