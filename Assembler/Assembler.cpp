@@ -16,7 +16,6 @@ int main(int argc, char** argv){
 
 	if (argc != 2) return 1;
 	
-
 	//attempts to open the file; if file doesn't exist or doesn't have the .asm extension terminate program
 	string extension = getFileExtension(argv[1]);
 	if (!(inputfile.is_open()) || extension != "asm"){
@@ -43,9 +42,20 @@ int main(int argc, char** argv){
 	//then store the file in a temporary stringstream and REMOVE all lines with labels
 	//This allows the assembler to use calls to labels that have not been defined yet in the .asm file
 	while (getline(inputfile, line)){
-		line_count++;
+		
 		//remove all whitespaces from the instruction (moved from the second file pass)
 		line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+		//remove all comments from instruction; if line was empty continue, else throws exception
+		if (line == "") continue;
+
+		if (line.find_first_of("//") != -1){
+			line.erase(line.find_first_of("//"), line.size());
+		}
+		//if line is empty after deleting comments, continue on to next line
+		if (line == "") continue;
+		
+		// line_count was above the comment deletion part and would increment after every comment line, which was wrong for our final code
+		line_count++;
 
 		//checks label definition
 		if (line.find_first_of("(") == 0){
@@ -63,27 +73,13 @@ int main(int argc, char** argv){
 	}
 
 
-
-
-
-
-
 	//This is the second pass of the file, generating all the code after the first pass has alocated memory for and removed all the labels
 	while (getline(ss, line)){
-		//line_count++;
-
-		
-
-		if (line.find_first_of("//") == 0) continue;
-		
-
+				
 		string parsed_line = parse(line);
 		outputfile << parsed_line << endl;
 
-	}
-
-	
-	
+	}		
 	inputfile.close();
 	outputfile.close();
 	//getchar();
