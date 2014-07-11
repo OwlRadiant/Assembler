@@ -9,6 +9,7 @@
 #include <fstream>
 #include <algorithm>
 #include "symboltable.h"
+#include "cleanfile.h"
 using namespace std;
 
 int main(int argc, char** argv){
@@ -43,15 +44,8 @@ int main(int argc, char** argv){
 	//This allows the assembler to use calls to labels that have not been defined yet in the .asm file
 	while (getline(inputfile, line)){
 		
-		//remove all whitespaces from the instruction (moved from the second file pass)
-		line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
-		//remove all comments from instruction; if line was empty continue, else throws exception
-		if (line == "") continue;
-
-		if (line.find_first_of("//") != -1){
-			line.erase(line.find_first_of("//"), line.size());
-		}
-		//if line is empty after deleting comments, continue on to next line
+		//cleans the line of any whitespaces or comments
+		clean_all(line);
 		if (line == "") continue;
 		
 		// line_count was above the comment deletion part and would increment after every comment line, which was wrong for our final code
