@@ -21,7 +21,7 @@ std::string parse(std::string line){
 			int address_value = atoi(temp_string);
 			//checks correct memory address range
 			if (address_value < 0 || address_value > 32767){
-				parsed_line = "error1";
+				parsed_line = "Memory value out of bounds.";
 				return parsed_line;
 			}
 			char* address_binary = new char[16];
@@ -61,21 +61,18 @@ std::string parse(std::string line){
 		dest = strtok(temp_string, " =");
 		comp = strtok(NULL, ";");
 		jump = strtok(NULL, "\n");
-		
 	}
 	else if (working_string.find('=') != -1){
 		char* temp_string = new char[sizeof(working)+1];
 		strcpy(temp_string, working);
 		dest = strtok(temp_string, "=");
 		comp = strtok(NULL, "\n");
-		
 	}
 	else if (working_string.find(';') != -1){
 		char* temp_string = new char[sizeof(working)+1];
 		strcpy(temp_string, working);
 		comp = strtok(temp_string, ";");
 		jump = strtok(NULL, "\n");
-		
 	}
 
 	

@@ -24,6 +24,7 @@ std::string getFileExtension(char *filename){
 
 	if (count <= 1) return NULL;
 
+	delete[] buffer;
 	return extension;
 }
 
@@ -48,10 +49,11 @@ std::string getFileName(char* filename){
 	//combines all string except the extension into the final filename
 	std::string result;
 
-	for (int i = 0; i < int(file_parts.size() - 1); i++){             //x.size() is of type size_t, operator "<" can't handle 2 different types in comparison
+	for (int i = 0; i < int(file_parts.size() - 1); i++){             //x.size() is of type size_t, operator "<" can't handle 2 different types in comparison, so we do explicit conversion
 		result += file_parts[i];
 		if (i < int(file_parts.size() - 2)) result += ".";
 	}
 
+	delete[] buffer;
 	return result;
 }

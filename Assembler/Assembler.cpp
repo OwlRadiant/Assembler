@@ -35,12 +35,44 @@ int main(int argc, char** argv){
 	//parse(line)
 	//write line to outputfile
 	string line;
-	int line_count = 0;
+	int line_count = -1;
+	int label_count = 0;
+	stringstream ss;
+
+	//The first pass of the file will parse only the label symbols to generate their memory value, 
+	//then store the file in a temporary stringstream and REMOVE all lines with labels
+	//This allows the assembler to use calls to labels that have not been defined yet in the .asm file
 	while (getline(inputfile, line)){
 		line_count++;
-
-		//remove all whitespaces from the instruction
+		//remove all whitespaces from the instruction (moved from the second file pass)
 		line.erase(std::remove_if(line.begin(), line.end(), ::isspace), line.end());
+
+		//checks label definition
+		if (line.find_first_of("(") == 0){
+			if (line.find_last_of(")") == line.size() - 1){
+				parse_label(line, line_count, label_count);
+				label_count++;
+				continue;
+			}
+			else{
+				cout << "Error at line " << line_count << endl;
+				return -3;
+			}
+		}
+		ss << line << endl;
+	}
+
+
+
+
+
+
+
+	//This is the second pass of the file, generating all the code after the first pass has alocated memory for and removed all the labels
+	while (getline(ss, line)){
+		//line_count++;
+
+		
 
 		if (line.find_first_of("//") == 0) continue;
 		
